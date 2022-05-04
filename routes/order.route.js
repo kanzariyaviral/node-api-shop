@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router();
-const order=require('../controller/ordercontroller')
-const Auth =require('../middleware/check-auth')
+const order=require('./../controller/ordercontroller')
+const Auth =require('./../middleware/check-auth')
 
 router.get('/',Auth,order.getorder)
 router.post('/',Auth,order.postorder)

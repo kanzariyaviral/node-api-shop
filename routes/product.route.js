@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const product = require('../controller/productController')
+const product = require('./../controller/productController')
 const multer = require('multer');
-const Auth=require('../middleware/check-auth')
+const Auth=require('./../middleware/check-auth')
 
 const Storage = multer.diskStorage({
     destination: function (req, file, cb) {

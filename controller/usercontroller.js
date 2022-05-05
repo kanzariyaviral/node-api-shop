@@ -2,7 +2,8 @@ const mongoose = require('mongoose')
 const User = require('../model/user.model')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
-const {JWK_KEY}=require('../config/config')
+const { JWK_KEY } = require('../config/config')
+let nodemailer = require('nodemailer');
 
 exports.signup = (req, res) => {
     User.find({ email: req.body.email })
@@ -28,6 +29,31 @@ exports.signup = (req, res) => {
                         });
                         user.save()
                             .then(result => {
+
+                                let transporter = nodemailer.createTransport({
+                                    service: 'gmail',
+                                    auth: {
+                                      user: 'viralgtcsys@gmail.com',
+                                      pass: 'ViralG@123'
+                                    }
+                                  });
+                                  
+                                  let mailOptions = {
+                                    from: 'viralgtcsys@gmail.com',
+                                    to: result.email,
+                                    subject: 'create account ',
+                                    text: `you are create account in nodejs-api-shop`
+                                  };
+                                  
+                                  transporter.sendMail(mailOptions,(error, info)=>{
+                                    if (error) {
+                                      console.log(error);
+                                    } else {
+                                      console.log('Email sent: ' + info.response);
+                                    }
+                                  });
+
+
                                 console.log(result);
                                 res.status(201).json({
                                     success: "User create"
@@ -45,7 +71,7 @@ exports.signup = (req, res) => {
 }
 
 
-exports.login = (req, res) => {
+exports.signin = (req, res) => {
     User.find({ email: req.body.email })
         .exec()
         .then(user => {
@@ -61,21 +87,22 @@ exports.login = (req, res) => {
                         })
                     }
                     if (result) {
+
                         const token = jwt.sign(
                             {
-                                email:user[0].email,
-                                userId:user[0]._id
+                                email: user[0].email,
+                                userId: user[0]._id
 
                             },
                             JWK_KEY,
                             {
-                                expiresIn:"1h"
+                                expiresIn: "1h"
                             }
 
                         )
                         return res.status(200).json({
                             message: 'Auth successful',
-                            token:token
+                            token: token
                         });
                     }
                     res.status(401).json({

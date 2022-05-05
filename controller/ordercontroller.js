@@ -18,7 +18,7 @@ exports.getorder = ((req, res) => {
                         product: docs.product,
                         request: {
                             type: 'GET',
-                            url: "http://localhost:3000/order/" + docs._id
+                            url: "https://node-rest-shop.herokuapp.com/order/" + docs._id
                         }
                     }
                 })
@@ -49,7 +49,12 @@ exports.postorder = ((req, res) => {
         })
         .then(result => {
             console.log(result)
-            res.status(200).json(result);
+            res.status(200).json({result:result,
+                request: {
+                    type: 'GET',
+                    description: "get all order",
+                    url: "https://node-rest-shop.herokuapp.com/order/"
+                }});
         })
         .catch(err => {
             console.log(err);
@@ -74,11 +79,11 @@ exports.getOrderById = ((req, res) => {
                     request: {
                         type: 'GET',
                         description: "get all order",
-                        url: "http://localhost:3000/order/"
+                        url: "https://node-rest-shop.herokuapp.com/order/"
                     }
                 });
             } else {
-                res.status(500).json({ message: 'no valid entry for this id' })
+                res.status(500).json({ message: 'no valid en for this id' })
             }
         })
         .catch(err => {
@@ -99,7 +104,7 @@ exports.deleteOrder = ((req, res) => {
                 message: 'your order is deleted',
                 request: {
                     type: 'POST',
-                    url: 'http://localhost:3000/order'
+                    url: 'https://node-rest-shop.herokuapp.com/order'
 
                 }
             })

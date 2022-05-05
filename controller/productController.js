@@ -18,7 +18,7 @@ exports.getallProduct = ((req, res) => {
                         productImage:doc.productImage,
                         request: {
                             type: 'GET',
-                            url: "http://localhost:3000/product/" + doc._id
+                            url: "https://node-rest-shop.herokuapp.com/product/" + doc._id
                         }
                     }
                 })
@@ -53,7 +53,7 @@ exports.postProduct = ((req, res) => {
                     _id:result._id,
                     request:{
                         type:'GET',
-                        url:"http://localhost:3000/product/" + result._id
+                        url:"https://node-rest-shop.herokuapp.com/product/" + result._id
                     }
                 }
 
@@ -92,7 +92,7 @@ exports.postProductImage = ((req, res) => {
                     productImage:result.productImage,
                     request:{
                         type:'GET',
-                        url:"http://localhost:3000/product/" + result._id
+                        url:"https://node-rest-shop.herokuapp.com/product/" + result._id
                     }
                 }
 
@@ -120,11 +120,11 @@ exports.getProductById = ((req, res) => {
                     request:{
                         type:'GET',
                         description:"get all product",
-                        url:"http://localhost:3000/product/"
+                        url:"https://node-rest-shop.herokuapp.com/product/"
                     }
                 });
             } else {
-                res.status(500).json({ message: 'no valid entry for this id' })
+                res.status(500).json({ message: 'no valid en for this id' })
             }
         })
         .catch(err => {
@@ -144,7 +144,7 @@ exports.deleteProduct = ((req, res) => {
                 message:'product deleted successfully',
                 request:{
                     type:'POST',
-                    url:"http://localhost:3000/product/"
+                    url:"https://node-rest-shop.herokuapp.com/product/"
                 }
             })
         })
@@ -168,7 +168,7 @@ exports.updateProduct = ((req, res) => {
                 Message: 'update product successfully',
                     request:{
                         type:'GET',
-                        url:"http://localhost:3000/product/" + id
+                        url:"https://node-rest-shop.herokuapp.com/product/" + id
                     }
                 
             })

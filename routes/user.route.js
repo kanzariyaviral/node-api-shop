@@ -5,7 +5,7 @@ const user = require('./../controller/usercontroller')
 
 router.post('/signup',user.signup)
 router.delete('/:id',user.userdelete)
-router.post('/login',user.login)
+router.post('/signin',user.signin)
 
 
 

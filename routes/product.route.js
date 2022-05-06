@@ -33,7 +33,7 @@ const upload = multer({
 
 
 router.get('/', product.getallProduct);
-router.post('/',Auth, product.postProduct);
+router.post('/',Auth,upload.single('productImage'), product.postProduct);
 
 //post image//
 router.post('/image', Auth,upload.single('productImage'), product.postProductImage);

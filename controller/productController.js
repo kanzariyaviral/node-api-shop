@@ -1,6 +1,6 @@
 
 const mongoose = require('mongoose')
-const Product = require('../model/product.model');
+const Product = require('./../model/product.model');
 
 
 exports.getallProduct = ((req, res) => {
@@ -51,6 +51,7 @@ exports.postProduct = ((req, res) => {
                     name:result.name,
                     price:result.price,
                     _id:result._id,
+                    productImage:result.productImage,
                     request:{
                         type:'GET',
                         url:"https://node-rest-shop.herokuapp.com/product/" + result._id

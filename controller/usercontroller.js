@@ -112,7 +112,7 @@ exports.signup = async (req, res) => {
 
 
 exports.signin = async (req, res) => {
-    await User.find({ email: req.body.email })
+    const findUser=await User.find({ email: req.body.email })
         .exec()
         .then(user => {
             if (user.length < 1) {
@@ -121,7 +121,7 @@ exports.signin = async (req, res) => {
                 })
             }
             else {
-                if (user[0].activeToken === false) {
+                if (findUser.activeToken == false) {
                     return res.status(401).json({
                         message: 'please verify your account'
                     })

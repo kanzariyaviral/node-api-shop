@@ -52,4 +52,3 @@ app.listen(port,()=>{
     console.log(`servere use port no ${port}`)
 });
 
-module.exports = app;

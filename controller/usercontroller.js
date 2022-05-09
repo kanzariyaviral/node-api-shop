@@ -110,55 +110,91 @@ exports.signup = async (req, res) => {
         })
 }
 
+//with .then() promise code lenth is big 
 
-exports.signin = async (req, res) => {
-    await User.find({ email: req.body.email })
-        .exec()
-        .then(user => {
-            var activeToken = user.activeToken
-            if (user.length < 1) {
-                return res.status(401).json({
-                    message: 'Auth failed'
-                })
-            }
-            else {
-                if (activeToken === false) {
-                    return res.status(401).json({
-                        message: 'please verify your account'
-                    })
-                }
-                bcrypt.compare(req.body.password, user[0].password, (err, result) => {
-                    if (err) {
-                        return res.status(401).json({
-                            message: 'Auth failed'
-                        })
+// exports.signin = async (req, res) => {
+//     await User.find({ email: req.body.email })
+//         .exec()
+//         .then(user => {
+//             var activeToken = user.activeToken
+//             if (user.length < 1) {
+//                 return res.status(401).json({
+//                     message: 'Auth failed'
+//                 })
+//             }
+//             else {
+//                 if (activeToken === false) {
+//                     return res.status(401).json({
+//                         message: 'please verify your account'
+//                     })
+//                 }
+//                 bcrypt.compare(req.body.password, user[0].password, (err, result) => {
+//                     if (err) {
+//                         return res.status(401).json({
+//                             message: 'Auth failed'
+//                         })
+//                     }
+//                     if (result) {
+
+//                         const token = jwt.sign(
+//                             {
+//                                 email: user[0].email,
+//                                 userId: user[0]._id
+
+//                             },
+//                             JWK_KEY,
+//                             {
+//                                 expiresIn: "1h"
+//                             }
+
+//                         )
+//                         return res.status(200).json({
+//                             message: 'Auth successful',
+//                             token: token
+//                         });
+//                     }
+//                     res.status(401).json({
+//                         message: 'Auth failed'
+//                     })
+//                 })
+
+//             }
+//         })
+// }
+
+exports.signIn = async (req, res) => {
+    // signIn with try catch
+    try {
+        const result = await User.findOne({ email: req.body.email }).exec()
+        if (result) {
+            const match = await bcrypt.compare(req.body.password, result.password);
+            if (match) {
+                const token = jwt.sign({
+                    email: result.email, userId: result._id
+
+                },
+                    JWK_KEY,
+                    {
+                        expiresIn: "1h"
                     }
-                    if (result) {
-
-                        const token = jwt.sign(
-                            {
-                                email: user[0].email,
-                                userId: user[0]._id
-
-                            },
-                            JWK_KEY,
-                            {
-                                expiresIn: "1h"
-                            }
-
-                        )
-                        return res.status(200).json({
-                            message: 'Auth successful',
-                            token: token
-                        });
-                    }
-                    res.status(401).json({
-                        message: 'Auth failed'
-                    })
-                })
-
+                )
+                return res.status(200).json({
+                    message: 'Auth successful',
+                    token: token
+                });
             }
-        })
+        }
+
+        throw Error('Auth unsuccessful please check oyur mail')
+    }
+    catch(error) {
+        return res.status(400).json({
+            message: error.message,
+        });
+
+    }
+
+    
 }
 
 
@@ -206,4 +242,3 @@ exports.userdelete = async (req, res) => {
             })
         })
 }
-

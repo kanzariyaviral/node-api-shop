@@ -6,7 +6,7 @@ const user = require('./../controller/usercontroller')
 
 router.post('/signup',user.signup)
 router.delete('/:id',user.userdelete)
-router.post('/signin',user.signin)
+router.post('/signin',user.signIn)
 router.get('/verify/query',user.verify)
 
 // https://node-rest-shop.herokuapp.com/user/verify/?email=${uemail}&token=${otp}

@@ -91,7 +91,7 @@ exports.signup = async (req, res) => {
                                 console.log(result);
                                 res.status(201).json({
                                     success: "User create",
-                                    message:"please check your email for verification"
+                                    message: "please check your email for verification"
                                 })
                             }
                             ).catch(err => {
@@ -112,16 +112,17 @@ exports.signup = async (req, res) => {
 
 
 exports.signin = async (req, res) => {
-    const findUser=await User.find({ email: req.body.email })
+    await User.find({ email: req.body.email })
         .exec()
         .then(user => {
+            var activeToken = user.activeToken
             if (user.length < 1) {
                 return res.status(401).json({
                     message: 'Auth failed'
                 })
             }
             else {
-                if (findUser.activeToken == false) {
+                if (activeToken === false) {
                     return res.status(401).json({
                         message: 'please verify your account'
                     })
@@ -166,19 +167,19 @@ exports.verify = async (req, res) => {
     let user = await User.find({ email: email })
     if (user) {
         if (user.verfication_token == Token) {
-            if(user.activeToken == true){
+            if (user.activeToken == true) {
                 return res.status(400).json("your account is already verfiyed")
             }
             var myquery = { email: email }
             var newvalues = { $set: { activeToken: true } };
-            User.updateOne(myquery, newvalues, (err,res) => {
+            User.updateOne(myquery, newvalues, (err, res) => {
                 if (err) {
                     console.log(err)
                     return res.status(400).json({ err: err })
                 }
                 console.log("update")
             })
-            res.status(200).json({success:"verification successfull"})
+            res.status(200).json({ success: "verification successfull" })
         } else {
             res.status(404).json({ failed: "verification failed" })
         }
